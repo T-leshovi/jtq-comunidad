@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   description:
     "Plataforma de registro para campañas sociales y humanitarias. Jesús T-leshovi Quiñones · CTM 08 · Cananea, Sonora.",
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
   },
 }
 

@@ -10,7 +10,7 @@ export default function JTQHeader({ title }: JTQHeaderProps) {
     <header className="w-full py-6 px-4 text-center">
       <div className="flex items-center justify-center gap-4">
         <Image
-          src="/logo-jtq.png"
+          src="/logo-jtq.svg"
           alt="JTQ"
           width={60}
           height={60}
@@ -18,7 +18,7 @@ export default function JTQHeader({ title }: JTQHeaderProps) {
           priority
         />
         <Image
-          src="/logo-ctm08.png"
+          src="/logo-ctm08.svg"
           alt="CTM 08"
           width={60}
           height={60}
