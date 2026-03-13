@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-jtq-primary: #2563eb;
+  --color-jtq-secondary: #059669;
+  --color-jtq-accent: #f59e0b;
+  --color-jtq-bg: #fefefe;
+  --color-jtq-card: #f8fafc;
+  --color-jtq-text: #1e293b;
+  --color-jtq-muted: #64748b;
+  --color-jtq-danger: #dc2626;
+  --color-jtq-success: #16a34a;
+  --color-jtq-border: #e2e8f0;
+}
+
+body {
+  background-color: var(--color-jtq-bg);
+  color: var(--color-jtq-text);
+  font-family: system-ui, -apple-system, sans-serif;
+}
