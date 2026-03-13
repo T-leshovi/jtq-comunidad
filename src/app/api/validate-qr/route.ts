@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
 import { getSession } from "@/lib/auth"
 import { validateQrSchema } from "@/lib/schema"
+import { generateFolio } from "@/lib/folio"
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,12 +55,15 @@ export async function POST(request: NextRequest) {
     const reg = rows[0]
     const metadata = (reg.metadata ?? {}) as Record<string, unknown>
 
+    const folio = generateFolio(reg.id as number)
+
     if (reg.status === "attended") {
       return NextResponse.json({
         already_attended: true,
         registration: {
           id: reg.id,
           registration_number: reg.registration_number,
+          folio,
           full_name: reg.full_name,
           whatsapp: reg.whatsapp,
           pet_type: metadata.pet_type,
@@ -89,6 +93,7 @@ export async function POST(request: NextRequest) {
       registration: {
         id: reg.id,
         registration_number: reg.registration_number,
+        folio,
         full_name: reg.full_name,
         whatsapp: reg.whatsapp,
         pet_type: metadata.pet_type,

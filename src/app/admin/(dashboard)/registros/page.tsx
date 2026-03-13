@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import RegistrationTable from "@/components/RegistrationTable"
+import { generateFolio } from "@/lib/folio"
 
 interface Registration {
   id: number
@@ -73,7 +74,7 @@ export default function RegistrosPage() {
   function exportCSV() {
     // Generate CSV from current data
     const headers = [
-      "Registro",
+      "Folio",
       "Nombre",
       "WhatsApp",
       "Tipo Mascota",
@@ -84,7 +85,7 @@ export default function RegistrosPage() {
     ]
 
     const rows = registrations.map((r) => [
-      r.registration_number,
+      generateFolio(r.id),
       r.full_name,
       r.whatsapp,
       r.pet_type || "",

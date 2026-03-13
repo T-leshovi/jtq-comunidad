@@ -279,7 +279,7 @@ export default function RegistrationForm({ activitySlug }: RegistrationFormProps
       <button
         type="submit"
         disabled={submitting}
-        className="w-full rounded-xl bg-jtq-secondary px-6 py-4 text-lg font-bold text-white shadow-md transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full btn-primary rounded-xl px-6 py-4 text-lg font-bold text-white transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {submitting ? (
           <span className="inline-flex items-center gap-2">

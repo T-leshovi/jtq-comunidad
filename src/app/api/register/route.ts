@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
 import { petRegistrationSchema } from "@/lib/schema"
+import { generateFolio } from "@/lib/folio"
 
 export async function POST(request: NextRequest) {
   try {
@@ -96,15 +97,18 @@ export async function POST(request: NextRequest) {
         ${metadata}::jsonb,
         'registered'
       )
-      RETURNING qr_token
+      RETURNING id, qr_token
     `
 
     const qrToken = rows[0].qr_token as string
+    const insertedId = rows[0].id as number
+    const folio = generateFolio(insertedId)
 
     return NextResponse.json({
       success: true,
       qr_token: qrToken,
       registration_number: registrationNumber,
+      folio,
       activity_name: activity.name,
     })
   } catch (error: unknown) {

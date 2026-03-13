@@ -16,6 +16,7 @@ interface ScanResult {
   type: "success" | "already_attended" | "error"
   registration?: {
     registration_number: number
+    folio: string
     full_name: string
     whatsapp: string
     pet_type: string
@@ -152,55 +153,65 @@ export default function EscanearPage() {
       {result && !validating && (
         <div className="mt-4">
           {result.type === "success" && result.registration && (
-            <div className="rounded-xl border-2 border-green-300 bg-green-50 p-6">
+            <div className="rounded-2xl border-2 border-green-300 bg-gradient-to-br from-green-50 to-emerald-50 p-6 animate-fade-in-up">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">✅</span>
+                <span className="text-3xl">✅</span>
                 <h2 className="text-lg font-bold text-green-800">
                   Asistencia Registrada
                 </h2>
               </div>
-              <div className="space-y-2 text-sm">
+              <p className="text-xl font-bold text-green-900 mb-1">
+                {result.registration.full_name}
+              </p>
+              <p className="text-sm font-mono font-bold text-green-700 mb-3">
+                {result.registration.folio}
+              </p>
+              <div className="space-y-2 text-sm border-t border-green-200 pt-3">
                 <p>
-                  <span className="text-green-700 font-medium">Nombre:</span>{" "}
-                  <span className="text-green-900 font-semibold">
-                    {result.registration.full_name}
-                  </span>
-                </p>
-                <p>
-                  <span className="text-green-700 font-medium">Registro:</span>{" "}
-                  #{result.registration.registration_number}
-                </p>
-                <p>
-                  <span className="text-green-700 font-medium">Mascota:</span>{" "}
+                  <span className="text-green-600 font-medium">Mascota:</span>{" "}
                   {result.registration.pet_type === "perro" ? "🐶" : "🐱"}{" "}
                   {result.registration.pet_name || result.registration.pet_type}
+                </p>
+                <p>
+                  <span className="text-green-600 font-medium">WhatsApp:</span>{" "}
+                  <a href={`https://wa.me/${result.registration.whatsapp}`} className="text-green-800 underline">
+                    {result.registration.whatsapp}
+                  </a>
+                </p>
+                <p className="text-xs text-green-500">
+                  {result.registration.activity_name}
                 </p>
               </div>
             </div>
           )}
 
           {result.type === "already_attended" && result.registration && (
-            <div className="rounded-xl border-2 border-yellow-300 bg-yellow-50 p-6">
+            <div className="rounded-2xl border-2 border-yellow-300 bg-gradient-to-br from-yellow-50 to-amber-50 p-6 animate-fade-in-up">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">⚠️</span>
+                <span className="text-3xl">⚠️</span>
                 <h2 className="text-lg font-bold text-yellow-800">
-                  Ya se registro la asistencia anteriormente
+                  Ya asistió anteriormente
                 </h2>
               </div>
-              <div className="space-y-2 text-sm">
+              <p className="text-xl font-bold text-yellow-900 mb-1">
+                {result.registration.full_name}
+              </p>
+              <p className="text-sm font-mono font-bold text-yellow-700 mb-3">
+                {result.registration.folio}
+              </p>
+              <div className="space-y-2 text-sm border-t border-yellow-200 pt-3">
                 <p>
-                  <span className="text-yellow-700 font-medium">Nombre:</span>{" "}
-                  <span className="text-yellow-900 font-semibold">
-                    {result.registration.full_name}
-                  </span>
+                  <span className="text-yellow-600 font-medium">Mascota:</span>{" "}
+                  {result.registration.pet_type === "perro" ? "🐶" : "🐱"}{" "}
+                  {result.registration.pet_name || result.registration.pet_type}
                 </p>
                 <p>
-                  <span className="text-yellow-700 font-medium">Registro:</span>{" "}
-                  #{result.registration.registration_number}
+                  <span className="text-yellow-600 font-medium">WhatsApp:</span>{" "}
+                  {result.registration.whatsapp}
                 </p>
                 {result.registration.attended_at && (
                   <p>
-                    <span className="text-yellow-700 font-medium">Asistio:</span>{" "}
+                    <span className="text-yellow-600 font-medium">Asistió:</span>{" "}
                     {new Date(result.registration.attended_at).toLocaleString("es-MX")}
                   </p>
                 )}

@@ -1,5 +1,7 @@
 "use client"
 
+import { generateFolio } from "@/lib/folio"
+
 interface Registration {
   id: number
   registration_number: number
@@ -66,7 +68,7 @@ export default function RegistrationTable({
           <thead>
             <tr className="border-b border-jtq-border text-left">
               <th className="px-4 py-3 text-xs font-semibold text-jtq-muted uppercase tracking-wider">
-                #
+                Folio
               </th>
               <th className="px-4 py-3 text-xs font-semibold text-jtq-muted uppercase tracking-wider">
                 Nombre
@@ -91,8 +93,8 @@ export default function RegistrationTable({
           <tbody className="divide-y divide-jtq-border">
             {registrations.map((reg) => (
               <tr key={reg.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 font-mono text-jtq-muted">
-                  {reg.registration_number}
+                <td className="px-4 py-3 font-mono text-jtq-primary text-xs font-bold">
+                  {generateFolio(reg.id)}
                 </td>
                 <td className="px-4 py-3 font-medium text-jtq-text">
                   {reg.full_name}
@@ -150,8 +152,8 @@ export default function RegistrationTable({
                 <p className="font-medium text-sm text-jtq-text">
                   {reg.full_name}
                 </p>
-                <p className="text-xs text-jtq-muted mt-0.5">
-                  #{reg.registration_number} &middot; {formatDate(reg.created_at)}
+                <p className="text-xs text-jtq-primary font-mono font-bold mt-0.5">
+                  {generateFolio(reg.id)} &middot; <span className="text-jtq-muted font-normal font-sans">{formatDate(reg.created_at)}</span>
                 </p>
               </div>
               <span

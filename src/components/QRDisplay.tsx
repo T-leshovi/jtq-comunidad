@@ -4,32 +4,29 @@ import { QRCodeSVG } from "qrcode.react"
 
 interface QRDisplayProps {
   token: string
-  registrationNumber: number
+  folio: string
   baseUrl: string
 }
 
 export default function QRDisplay({
   token,
-  registrationNumber,
+  folio,
   baseUrl,
 }: QRDisplayProps) {
   const qrValue = `${baseUrl}/verificar/${token}`
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="rounded-xl border border-jtq-border bg-white p-4 shadow-sm">
+    <div className="flex flex-col items-center gap-3">
+      <div className="rounded-xl bg-white p-3">
         <QRCodeSVG
           value={qrValue}
-          size={200}
+          size={180}
           level="M"
-          includeMargin
+          includeMargin={false}
         />
       </div>
-      <p className="text-3xl font-bold text-jtq-primary">
-        #{String(registrationNumber).padStart(4, "0")}
-      </p>
-      <p className="text-sm text-jtq-muted text-center">
-        Presenta este código QR el día de tu cita
+      <p className="text-sm font-mono font-bold text-jtq-primary tracking-wider">
+        {folio}
       </p>
     </div>
   )
