@@ -77,9 +77,9 @@ export default async function ConfirmacionPage({ params }: PageProps) {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-jtq.svg" alt="JTQ" className="h-8 w-auto" />
+              <img src="/logo-jtq.png" alt="JTQ" className="h-8 w-auto" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-ctm08.svg" alt="CTM 08" className="h-8 w-auto" />
+              <img src="/logo-ctm08.png" alt="CTM 08" className="h-8 w-auto" />
             </div>
             <span className="text-xs font-bold text-jtq-primary uppercase tracking-wider">
               Pase de Registro

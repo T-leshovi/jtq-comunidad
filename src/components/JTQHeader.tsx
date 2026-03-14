@@ -10,13 +10,13 @@ export default function JTQHeader({ title }: JTQHeaderProps) {
       <div className="flex items-center justify-center gap-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/logo-jtq.svg"
+          src="/logo-jtq.png"
           alt="JTQ"
           className="h-[60px] w-auto object-contain"
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/logo-ctm08.svg"
+          src="/logo-ctm08.png"
           alt="CTM 08"
           className="h-[60px] w-auto object-contain"
         />

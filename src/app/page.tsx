@@ -8,9 +8,9 @@ export default function HomePage() {
       <section className="gradient-hero paw-pattern relative flex flex-col items-center justify-center px-4 pt-12 pb-16 text-center">
         <div className="flex items-center gap-3 animate-fade-in-up">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-jtq.svg" alt="JTQ" className="h-14 w-auto" />
+          <img src="/logo-jtq.png" alt="JTQ" className="h-14 w-auto" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-ctm08.svg" alt="CTM 08" className="h-14 w-auto" />
+          <img src="/logo-ctm08.png" alt="CTM 08" className="h-14 w-auto" />
         </div>
 
         <div className="mt-6 animate-fade-in-up delay-100">

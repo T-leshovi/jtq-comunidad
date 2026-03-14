@@ -43,9 +43,9 @@ export default async function RegistrationPage({ params }: PageProps) {
       <div className="text-center mb-6 animate-fade-in-up">
         <div className="flex items-center justify-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-jtq.svg" alt="JTQ" className="h-10 w-auto" />
+          <img src="/logo-jtq.png" alt="JTQ" className="h-10 w-auto" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-ctm08.svg" alt="CTM 08" className="h-10 w-auto" />
+          <img src="/logo-ctm08.png" alt="CTM 08" className="h-10 w-auto" />
         </div>
         <h1 className="mt-3 text-xl font-bold text-white drop-shadow-md">
           {activity.name}
