@@ -1,7 +1,10 @@
 export const SITE_NAME = "JTQ Comunidad"
-export const ORGANIZER_NAME = "Jesús T-leshovi Quiñones"
-export const ORGANIZER_ORG = "CTM 08"
+export const SITE_DOMAIN = "jtqcomunidad.org"
+export const ORGANIZER_NAME = "Jesús T-Leshovi Quiñones"
+export const ORGANIZER_TITLE = "Líder Comunitario · Desarrollador de Tecnología con IA"
 export const LOCATION = "Cananea, Sonora"
+export const TECH_TAGLINE = "Impulsado por JEQUIMA · Desarrolladores de IA"
+export const COLLABORATOR_ORG = "CTM Sección 08" // Used in legal/privacy only
 
 export const COLORS = {
   primary: "#2563eb",

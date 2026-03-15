@@ -11,10 +11,10 @@ interface RiskWaiverProps {
 export default function RiskWaiver({ checked, onChange, error }: RiskWaiverProps) {
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-semibold text-jtq-text">
+      <label className="block text-sm font-semibold text-slate-800">
         Carta de responsabilidad quirúrgica
       </label>
-      <div className="max-h-40 overflow-y-auto rounded-lg border border-jtq-border bg-gray-50 p-4 text-sm text-jtq-text leading-relaxed">
+      <div className="max-h-40 overflow-y-auto rounded-lg border border-slate-300 bg-gray-50 p-4 text-sm text-slate-700 leading-relaxed">
         {RISK_WAIVER_TEXT}
       </div>
       <label
@@ -26,14 +26,14 @@ export default function RiskWaiver({ checked, onChange, error }: RiskWaiverProps
           id="risk-consent"
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
-          className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-jtq-border text-jtq-primary accent-jtq-primary cursor-pointer"
+          className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-slate-300 text-blue-600 accent-blue-600 cursor-pointer"
         />
-        <span className="text-sm text-jtq-text leading-snug">
+        <span className="text-sm text-slate-700 leading-snug">
           He leído y acepto la carta de responsabilidad quirúrgica
         </span>
       </label>
       {error && (
-        <p className="text-sm text-jtq-danger ml-8">{error}</p>
+        <p className="text-sm text-red-600 ml-8">{error}</p>
       )}
     </div>
   )

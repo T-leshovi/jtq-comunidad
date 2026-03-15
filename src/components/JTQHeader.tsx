@@ -1,4 +1,4 @@
-import { ORGANIZER_NAME, ORGANIZER_ORG, LOCATION } from "@/lib/constants"
+import { ORGANIZER_NAME, LOCATION } from "@/lib/constants"
 
 interface JTQHeaderProps {
   title?: string
@@ -12,20 +12,20 @@ export default function JTQHeader({ title }: JTQHeaderProps) {
         <img
           src="/logo-jtq.png"
           alt="JTQ"
-          className="h-[60px] w-auto object-contain"
+          className="h-[80px] sm:h-[100px] w-auto object-contain"
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/logo-ctm08.png"
           alt="CTM 08"
-          className="h-[60px] w-auto object-contain"
+          className="h-[80px] sm:h-[100px] w-auto object-contain"
         />
       </div>
-      <h1 className="mt-3 text-lg font-bold text-jtq-text">
+      <h1 className="mt-3 text-xl font-extrabold text-jtq-text">
         {ORGANIZER_NAME}
       </h1>
       <p className="text-sm text-jtq-muted">
-        {ORGANIZER_ORG} &middot; {LOCATION}
+        {LOCATION}
       </p>
       {title && (
         <p className="mt-2 text-base font-semibold text-jtq-primary">

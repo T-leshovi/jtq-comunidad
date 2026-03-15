@@ -30,9 +30,9 @@ export default function ConsentCheckbox({
           id={id}
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
-          className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-jtq-border text-jtq-primary accent-jtq-primary cursor-pointer"
+          className="mt-0.5 h-5 w-5 min-w-[20px] rounded border-slate-300 text-blue-600 accent-blue-600 cursor-pointer"
         />
-        <span className="text-sm text-jtq-text leading-snug">
+        <span className="text-sm text-slate-700 leading-snug">
           {label}
           {showPrivacyLink && (
             <>
@@ -41,7 +41,7 @@ export default function ConsentCheckbox({
                 href="/privacidad"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-jtq-primary underline font-medium"
+                className="text-blue-600 underline font-medium"
               >
                 Aviso de Privacidad
               </Link>
@@ -50,7 +50,7 @@ export default function ConsentCheckbox({
         </span>
       </label>
       {error && (
-        <p className="text-sm text-jtq-danger ml-8">{error}</p>
+        <p className="text-sm text-red-600 ml-8">{error}</p>
       )}
     </div>
   )

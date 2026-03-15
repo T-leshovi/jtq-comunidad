@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { getDb } from "@/lib/db"
 import { generateFolio } from "@/lib/folio"
-import { ORGANIZER_NAME, ORGANIZER_ORG, LOCATION } from "@/lib/constants"
+import { ORGANIZER_NAME, LOCATION, COLLABORATOR_ORG } from "@/lib/constants"
 import QRDisplay from "@/components/QRDisplay"
 import ShareButton from "@/components/ShareButton"
+import { DogIllustration, CatIllustration } from "@/components/PetIllustrations"
 
 interface PageProps {
   params: Promise<{ token: string }>
@@ -66,41 +67,63 @@ export default async function ConfirmacionPage({ params }: PageProps) {
     <main className="min-h-screen gradient-hero paw-pattern flex flex-col items-center justify-center px-4 py-8">
       {/* Success Banner */}
       <div className="text-center mb-6 animate-fade-in-up">
-        <span className="text-5xl block animate-float">🎉</span>
+        <div className="flex items-center justify-center gap-3">
+          <DogIllustration className="w-14 h-14 animate-float" />
+          <div className="confetti-burst">
+            <svg className="w-12 h-12 text-amber-300 animate-scale-in" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" fill="currentColor" />
+            </svg>
+          </div>
+          <CatIllustration className="w-14 h-14 animate-float" style={{ animationDelay: "1.5s" }} />
+        </div>
         <h1 className="mt-3 text-2xl font-bold text-white drop-shadow-md">¡Registro exitoso!</h1>
       </div>
 
       {/* Digital Pass Card */}
       <div className="w-full max-w-sm animate-fade-in-up delay-200 rounded-2xl overflow-hidden shadow-2xl">
+        {/* Branding Strip */}
+        <div className="gradient-pass px-4 py-2.5 flex items-center justify-center gap-2">
+          <span className="text-[11px] font-bold text-white/90 tracking-wider uppercase">{COLLABORATOR_ORG}</span>
+          <span className="text-white/40">×</span>
+          <span className="text-[11px] font-bold text-white/90 tracking-wider uppercase">JEQUIMA</span>
+        </div>
+
         {/* Pass Header */}
-        <div className="bg-white/95 backdrop-blur-sm px-6 pt-6 pb-4">
+        <div className="bg-white/95 backdrop-blur-sm px-6 pt-5 pb-4 paw-watermark relative">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-jtq.png" alt="JTQ" className="h-8 w-auto" />
+              <img src="/logo-jtq.png" alt="JTQ" className="h-12 sm:h-14 w-auto" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-ctm08.png" alt="CTM 08" className="h-8 w-auto" />
+              <img src="/logo-ctm08.png" alt="CTM 08" className="h-12 sm:h-14 w-auto" />
             </div>
-            <span className="text-xs font-bold text-jtq-primary uppercase tracking-wider">
+            <span className="text-[10px] font-bold text-jtq-primary uppercase tracking-wider bg-blue-50 px-2 py-1 rounded-full">
               Pase de Registro
             </span>
           </div>
 
           <div className="mb-3">
-            <p className="text-xs text-jtq-muted uppercase tracking-wide">Nombre</p>
-            <p className="text-lg font-bold text-jtq-text">{registration.full_name}</p>
+            <p className="text-xs text-gray-400 uppercase tracking-wide">Nombre</p>
+            <p className="text-lg font-bold text-gray-900">{registration.full_name}</p>
           </div>
 
-          <div className="flex gap-6">
+          <div className="flex items-center gap-5">
             <div>
-              <p className="text-xs text-jtq-muted uppercase tracking-wide">Folio</p>
-              <p className="text-lg font-bold text-jtq-primary font-mono">{folio}</p>
+              <p className="text-xs text-gray-400 uppercase tracking-wide">Folio</p>
+              <span className="inline-block mt-0.5 text-sm font-bold text-white bg-blue-600 px-3 py-1 rounded-full font-mono">{folio}</span>
             </div>
-            <div>
-              <p className="text-xs text-jtq-muted uppercase tracking-wide">Mascota</p>
-              <p className="text-lg font-bold text-jtq-text">
-                {petType === "perro" ? "🐶" : "🐱"} {petName || (petType === "perro" ? "Perro" : "Gato")}
-              </p>
+            <div className="flex items-center gap-2">
+              {petType === "perro" ? (
+                <DogIllustration className="w-10 h-10" />
+              ) : (
+                <CatIllustration className="w-10 h-10" />
+              )}
+              <div>
+                <p className="text-xs text-gray-400 uppercase tracking-wide">Mascota</p>
+                <p className="text-base font-bold text-gray-900">
+                  {petName || (petType === "perro" ? "Perro" : "Gato")}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -115,11 +138,16 @@ export default async function ConfirmacionPage({ params }: PageProps) {
 
         {/* QR Section */}
         <div className="bg-white/95 backdrop-blur-sm px-6 pt-4 pb-6 text-center">
-          <QRDisplay token={registration.qr_token} folio={folio} baseUrl={baseUrl} />
-          <div className="mt-4 pt-3 border-t border-gray-100">
-            <p className="text-xs font-semibold text-jtq-text">{registration.activity_name}</p>
-            <p className="text-xs text-jtq-muted mt-1">
-              {ORGANIZER_NAME} &middot; {ORGANIZER_ORG} &middot; {LOCATION}
+          <div className="inline-block p-1.5 rounded-xl bg-gradient-to-br from-blue-500 via-teal-500 to-emerald-500">
+            <div className="bg-white rounded-lg p-1">
+              <QRDisplay token={registration.qr_token} folio={folio} baseUrl={baseUrl} />
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-3 font-medium">Presenta este pase el día de tu cita</p>
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <p className="text-xs font-semibold text-gray-800">{registration.activity_name}</p>
+            <p className="text-[11px] text-gray-400 mt-1">
+              {ORGANIZER_NAME} &middot; {COLLABORATOR_ORG} &middot; {LOCATION}
             </p>
           </div>
         </div>

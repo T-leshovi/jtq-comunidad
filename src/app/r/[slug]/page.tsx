@@ -1,6 +1,7 @@
 import Link from "next/link"
 import RegistrationForm from "@/components/RegistrationForm"
-import { ORGANIZER_NAME, ORGANIZER_ORG, LOCATION } from "@/lib/constants"
+import { ORGANIZER_NAME, LOCATION, COLLABORATOR_ORG } from "@/lib/constants"
+import { DogIllustration, CatIllustration } from "@/components/PetIllustrations"
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -43,30 +44,34 @@ export default async function RegistrationPage({ params }: PageProps) {
       <div className="text-center mb-6 animate-fade-in-up">
         <div className="flex items-center justify-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-jtq.png" alt="JTQ" className="h-10 w-auto" />
+          <img src="/logo-jtq.png" alt="JTQ" className="h-14 sm:h-16 w-auto" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-ctm08.png" alt="CTM 08" className="h-10 w-auto" />
+          <img src="/logo-ctm08.png" alt="CTM 08" className="h-14 sm:h-16 w-auto" />
         </div>
-        <h1 className="mt-3 text-xl font-bold text-white drop-shadow-md">
-          {activity.name}
-        </h1>
+        <div className="flex items-center justify-center gap-4 mt-3">
+          <DogIllustration className="w-12 h-12 animate-float" />
+          <h1 className="text-xl font-bold text-white drop-shadow-md">
+            {activity.name}
+          </h1>
+          <CatIllustration className="w-12 h-12 animate-float" style={{ animationDelay: "1.5s" }} />
+        </div>
         <p className="mt-1 text-xs text-white/70">
-          {ORGANIZER_NAME} &middot; {ORGANIZER_ORG} &middot; {LOCATION}
+          {ORGANIZER_NAME} &middot; {COLLABORATOR_ORG} &middot; {LOCATION}
         </p>
       </div>
 
       {/* Form Card */}
       <div className="max-w-lg mx-auto animate-fade-in-up delay-200">
         {/* Info banner */}
-        <div className="glass-card rounded-t-2xl px-5 pt-5 pb-3 border-b border-amber-200/30">
-          <p className="text-sm text-jtq-text leading-relaxed">
+        <div className="glass-card-form rounded-t-2xl px-5 pt-5 pb-3 border-b border-amber-200/30">
+          <p className="text-sm text-slate-700 leading-relaxed">
             <span className="font-semibold">ℹ️ Importante:</span>{" "}
             {activity.description}
           </p>
         </div>
 
         {/* Form */}
-        <div className="glass-card rounded-b-2xl px-5 pt-4 pb-6">
+        <div className="glass-card-form rounded-b-2xl px-5 pt-4 pb-6">
           <RegistrationForm activitySlug={slug} />
         </div>
       </div>

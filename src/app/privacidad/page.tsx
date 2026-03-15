@@ -1,6 +1,6 @@
 import Link from "next/link"
 import JTQHeader from "@/components/JTQHeader"
-import { ORGANIZER_NAME, ORGANIZER_ORG, LOCATION } from "@/lib/constants"
+import { ORGANIZER_NAME, COLLABORATOR_ORG, LOCATION } from "@/lib/constants"
 
 export default function PrivacidadPage() {
   return (
@@ -13,7 +13,7 @@ export default function PrivacidadPage() {
         <section>
           <h3 className="font-semibold text-jtq-text mb-1">Responsable</h3>
           <p>
-            {ORGANIZER_NAME}, en coordinación con {ORGANIZER_ORG}, con sede en{" "}
+            {ORGANIZER_NAME}, en coordinación con {COLLABORATOR_ORG}, con sede en{" "}
             {LOCATION}, México, es responsable del tratamiento de los datos
             personales que usted proporcione a través de esta plataforma.
           </p>
@@ -59,7 +59,7 @@ export default function PrivacidadPage() {
           </p>
           <p className="mt-2">
             Para ejercer cualquiera de estos derechos, puede enviar su solicitud
-            a través de WhatsApp o en persona en las oficinas de {ORGANIZER_ORG}{" "}
+            a través de WhatsApp o en persona en las oficinas de {COLLABORATOR_ORG}{" "}
             en {LOCATION}.
           </p>
         </section>
