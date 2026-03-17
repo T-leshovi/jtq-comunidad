@@ -72,6 +72,33 @@ export async function GET(request: NextRequest) {
       byOwnership[row.ownership as string] = row.count as number
     }
 
+    // Duplicates count
+    const dupRows = await sql`
+      SELECT
+        (SELECT COUNT(*)::int FROM (
+          SELECT whatsapp FROM registrations WHERE status != 'cancelled'
+          GROUP BY whatsapp HAVING COUNT(*) > 1
+        ) t) AS dup_phone_groups,
+        (SELECT SUM(cnt)::int FROM (
+          SELECT COUNT(*)::int AS cnt FROM registrations WHERE status != 'cancelled'
+          GROUP BY whatsapp HAVING COUNT(*) > 1
+        ) t) AS dup_phone_regs,
+        (SELECT COUNT(*)::int FROM (
+          SELECT LOWER(TRIM(full_name)) FROM registrations WHERE status != 'cancelled'
+          GROUP BY LOWER(TRIM(full_name)) HAVING COUNT(*) > 1
+        ) t) AS dup_name_groups,
+        (SELECT SUM(cnt)::int FROM (
+          SELECT COUNT(*)::int AS cnt FROM registrations WHERE status != 'cancelled'
+          GROUP BY LOWER(TRIM(full_name)) HAVING COUNT(*) > 1
+        ) t) AS dup_name_regs
+    `
+    const duplicates = {
+      phone_groups: (dupRows[0].dup_phone_groups as number) || 0,
+      phone_registrations: (dupRows[0].dup_phone_regs as number) || 0,
+      name_groups: (dupRows[0].dup_name_groups as number) || 0,
+      name_registrations: (dupRows[0].dup_name_regs as number) || 0,
+    }
+
     // Recent registrations
     const recentRows = await sql`
       SELECT
@@ -107,6 +134,7 @@ export async function GET(request: NextRequest) {
       by_pet_type: byPetType,
       by_ownership: byOwnership,
       recent_registrations: recentRegistrations,
+      duplicates,
     })
   } catch (error) {
     console.error("Stats error:", error)

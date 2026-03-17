@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { Suspense, useEffect, useState, useCallback } from "react"
+import { useSearchParams } from "next/navigation"
 import RegistrationTable from "@/components/RegistrationTable"
 import { generateFolio } from "@/lib/folio"
 
@@ -17,6 +18,8 @@ interface Registration {
   created_at: string
   scheduled_date: string | null
   attended_at: string | null
+  dup_phone?: boolean
+  dup_name?: boolean
 }
 
 const STATUS_OPTIONS = [
@@ -27,7 +30,8 @@ const STATUS_OPTIONS = [
   { value: "cancelled", label: "Cancelado" },
 ]
 
-export default function RegistrosPage() {
+function RegistrosContent() {
+  const searchParams = useSearchParams()
   const [registrations, setRegistrations] = useState<Registration[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -35,6 +39,7 @@ export default function RegistrosPage() {
   const [search, setSearch] = useState("")
   const [searchInput, setSearchInput] = useState("")
   const [statusFilter, setStatusFilter] = useState("")
+  const [dupFilter, setDupFilter] = useState(searchParams.get("dup") || "")
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
 
@@ -48,6 +53,7 @@ export default function RegistrosPage() {
       params.set("limit", String(limit))
       if (search) params.set("search", search)
       if (statusFilter) params.set("status", statusFilter)
+      if (dupFilter) params.set("duplicates", dupFilter)
 
       const res = await fetch(`/api/registrations?${params}`)
       if (!res.ok) throw new Error("Error al cargar registros")
@@ -59,7 +65,7 @@ export default function RegistrosPage() {
     } finally {
       setLoading(false)
     }
-  }, [page, limit, search, statusFilter])
+  }, [page, limit, search, statusFilter, dupFilter])
 
   useEffect(() => {
     fetchRegistrations()
@@ -72,7 +78,6 @@ export default function RegistrosPage() {
   }
 
   function exportCSV() {
-    // Generate CSV from current data
     const headers = [
       "Folio",
       "Nombre",
@@ -96,7 +101,7 @@ export default function RegistrosPage() {
     ])
 
     const csvContent =
-      "\uFEFF" + // BOM for Excel
+      "\uFEFF" +
       [headers, ...rows]
         .map((row) =>
           row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")
@@ -117,15 +122,27 @@ export default function RegistrosPage() {
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <h1 className="text-xl font-bold text-jtq-text">Registros</h1>
+        <h1 className="text-xl font-bold text-white heading-font">Registros</h1>
         <button
           onClick={exportCSV}
           disabled={registrations.length === 0}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-jtq-border bg-white text-sm font-medium text-jtq-text hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm font-medium text-jtq-muted hover:bg-white/10 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span>📥</span> Exportar CSV
         </button>
       </div>
+
+      {/* Duplicate alert */}
+      {!loading && registrations.some(r => r.dup_phone || r.dup_name) && (
+        <div className="mb-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-sm text-amber-400 flex items-center gap-2">
+          <span>⚠️</span>
+          <span>
+            Se detectaron registros duplicados en esta página.
+            <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 font-medium">DUP</span> = mismo teléfono,
+            <span className="ml-1 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400">NOMBRE</span> = mismo nombre.
+          </span>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -135,11 +152,11 @@ export default function RegistrosPage() {
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Buscar por nombre o WhatsApp..."
-            className="flex-1 px-3.5 py-2.5 rounded-lg border border-jtq-border text-sm focus:outline-none focus:ring-2 focus:ring-jtq-primary/30 focus:border-jtq-primary"
+            className="flex-1 px-3.5 py-2.5 rounded-lg border border-white/10 bg-white/5 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-jtq-primary/40 focus:border-jtq-primary/50 transition-colors"
           />
           <button
             type="submit"
-            className="px-4 py-2.5 rounded-lg bg-jtq-primary text-white text-sm font-medium hover:bg-blue-700 transition-colors"
+            className="px-4 py-2.5 rounded-lg btn-primary text-white text-sm font-medium"
           >
             Buscar
           </button>
@@ -151,33 +168,51 @@ export default function RegistrosPage() {
             setStatusFilter(e.target.value)
             setPage(1)
           }}
-          className="px-3.5 py-2.5 rounded-lg border border-jtq-border text-sm bg-white focus:outline-none focus:ring-2 focus:ring-jtq-primary/30 focus:border-jtq-primary"
+          className="px-3.5 py-2.5 rounded-lg border border-white/10 bg-white/5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-jtq-primary/40 focus:border-jtq-primary/50"
         >
           {STATUS_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
+            <option key={opt.value} value={opt.value} className="bg-[#1e293b] text-white">
               {opt.label}
             </option>
           ))}
+        </select>
+
+        <select
+          value={dupFilter}
+          onChange={(e) => {
+            setDupFilter(e.target.value)
+            setPage(1)
+          }}
+          className={`px-3.5 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-jtq-primary/40 focus:border-jtq-primary/50 ${
+            dupFilter
+              ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
+              : "border-white/10 bg-white/5 text-white"
+          }`}
+        >
+          <option value="" className="bg-[#1e293b] text-white">Duplicados</option>
+          <option value="any" className="bg-[#1e293b] text-white">Todos los duplicados</option>
+          <option value="phone" className="bg-[#1e293b] text-white">Mismo telefono</option>
+          <option value="name" className="bg-[#1e293b] text-white">Mismo nombre</option>
         </select>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-jtq-danger">
+        <div className="mb-4 p-3 rounded-lg bg-red-500/15 border border-red-500/30 text-sm text-red-400">
           {error}
         </div>
       )}
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-jtq-border overflow-hidden">
+      <div className="glass-card rounded-xl overflow-hidden">
         {loading ? (
           <div className="p-6 space-y-3">
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="animate-pulse flex gap-4">
-                <div className="h-4 bg-gray-200 rounded w-10" />
-                <div className="h-4 bg-gray-200 rounded flex-1" />
-                <div className="h-4 bg-gray-200 rounded w-24" />
-                <div className="h-4 bg-gray-200 rounded w-16" />
+                <div className="h-4 bg-white/10 rounded w-10" />
+                <div className="h-4 bg-white/10 rounded flex-1" />
+                <div className="h-4 bg-white/10 rounded w-24" />
+                <div className="h-4 bg-white/10 rounded w-16" />
               </div>
             ))}
           </div>
@@ -196,7 +231,7 @@ export default function RegistrosPage() {
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="px-3 py-1.5 rounded-lg border border-jtq-border text-sm bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded-lg border border-white/10 text-sm text-jtq-muted bg-white/5 hover:bg-white/10 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Anterior
             </button>
@@ -206,7 +241,7 @@ export default function RegistrosPage() {
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages}
-              className="px-3 py-1.5 rounded-lg border border-jtq-border text-sm bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded-lg border border-white/10 text-sm text-jtq-muted bg-white/5 hover:bg-white/10 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Siguiente
             </button>
@@ -214,5 +249,23 @@ export default function RegistrosPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function RegistrosPage() {
+  return (
+    <Suspense fallback={
+      <div className="p-6 space-y-3">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="animate-pulse flex gap-4">
+            <div className="h-4 bg-white/10 rounded w-10" />
+            <div className="h-4 bg-white/10 rounded flex-1" />
+            <div className="h-4 bg-white/10 rounded w-24" />
+          </div>
+        ))}
+      </div>
+    }>
+      <RegistrosContent />
+    </Suspense>
   )
 }

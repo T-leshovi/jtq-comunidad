@@ -38,21 +38,25 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm">
-        <div className="bg-white rounded-2xl shadow-sm border border-jtq-border p-8">
+    <div className="min-h-screen flex items-center justify-center bg-[#0a0f1a] paw-pattern px-4 relative overflow-hidden">
+      {/* Decorative circles */}
+      <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-jtq-primary/10 blur-3xl" />
+      <div className="absolute -bottom-20 -left-20 w-56 h-56 rounded-full bg-emerald-500/10 blur-3xl" />
+
+      <div className="w-full max-w-sm relative z-10">
+        <div className="glass-card rounded-2xl p-8 animate-scale-in">
           {/* Branding */}
           <div className="text-center mb-8">
-            <div className="mx-auto w-14 h-14 rounded-xl bg-jtq-primary flex items-center justify-center text-white font-bold text-xl mb-3">
+            <div className="mx-auto w-14 h-14 rounded-xl bg-gradient-to-br from-jtq-primary to-blue-400 flex items-center justify-center text-white font-bold text-xl mb-3 shadow-lg shadow-jtq-primary/30">
               JTQ
             </div>
-            <h1 className="text-xl font-bold text-jtq-text">JTQ Admin</h1>
+            <h1 className="text-xl font-bold text-white heading-font">JTQ Admin</h1>
             <p className="text-sm text-jtq-muted mt-1">Panel de administracion</p>
           </div>
 
           {/* Error */}
           {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-jtq-danger">
+            <div className="mb-4 p-3 rounded-lg bg-red-500/15 border border-red-500/30 text-sm text-red-400">
               {error}
             </div>
           )}
@@ -60,7 +64,7 @@ export default function AdminLoginPage() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-jtq-text mb-1.5">
+              <label htmlFor="username" className="block text-sm font-medium text-jtq-muted mb-1.5">
                 Usuario
               </label>
               <input
@@ -70,13 +74,13 @@ export default function AdminLoginPage() {
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 autoComplete="username"
-                className="w-full px-3.5 py-2.5 rounded-lg border border-jtq-border text-sm focus:outline-none focus:ring-2 focus:ring-jtq-primary/30 focus:border-jtq-primary"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-white/10 bg-white/5 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-jtq-primary/40 focus:border-jtq-primary/50 transition-colors"
                 placeholder="admin"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-jtq-text mb-1.5">
+              <label htmlFor="password" className="block text-sm font-medium text-jtq-muted mb-1.5">
                 Contrasena
               </label>
               <input
@@ -86,7 +90,7 @@ export default function AdminLoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                className="w-full px-3.5 py-2.5 rounded-lg border border-jtq-border text-sm focus:outline-none focus:ring-2 focus:ring-jtq-primary/30 focus:border-jtq-primary"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-white/10 bg-white/5 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-jtq-primary/40 focus:border-jtq-primary/50 transition-colors"
                 placeholder="••••••••"
               />
             </div>
@@ -94,14 +98,14 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-lg bg-jtq-primary text-white text-sm font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 rounded-lg btn-primary text-white text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Ingresando..." : "Iniciar Sesion"}
             </button>
           </form>
         </div>
 
-        <p className="text-center text-xs text-jtq-muted mt-6">
+        <p className="text-center text-xs text-white/30 mt-6">
           JTQ Comunidad &middot; Panel Administrativo
         </p>
       </div>
