@@ -15,20 +15,21 @@ export async function POST(request: NextRequest) {
     }
 
     const { username, password } = parsed.data
-    const admin = await verifyAdmin(username, password)
+    const user = await verifyAdmin(username, password)
 
-    if (!admin) {
+    if (!user) {
       return NextResponse.json(
         { error: "Usuario o contraseña incorrectos" },
         { status: 401 }
       )
     }
 
-    await createSession(admin.id)
+    await createSession(user.id)
 
     return NextResponse.json({
       success: true,
-      name: admin.name,
+      name: user.name,
+      role: user.role,
     })
   } catch (error) {
     console.error("Auth error:", error)

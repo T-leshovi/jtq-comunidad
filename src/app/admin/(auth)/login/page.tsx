@@ -29,7 +29,8 @@ export default function AdminLoginPage() {
         return
       }
 
-      router.push("/admin")
+      const target = data.role === "caller" ? "/admin/caller" : "/admin"
+      router.push(target)
     } catch {
       setError("Error de conexion. Intenta de nuevo.")
     } finally {
@@ -39,13 +40,11 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0f1a] paw-pattern px-4 relative overflow-hidden">
-      {/* Decorative circles */}
       <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-jtq-primary/10 blur-3xl" />
       <div className="absolute -bottom-20 -left-20 w-56 h-56 rounded-full bg-emerald-500/10 blur-3xl" />
 
       <div className="w-full max-w-sm relative z-10">
         <div className="glass-card rounded-2xl p-8 animate-scale-in">
-          {/* Branding */}
           <div className="text-center mb-8">
             <div className="mx-auto w-14 h-14 rounded-xl bg-gradient-to-br from-jtq-primary to-blue-400 flex items-center justify-center text-white font-bold text-xl mb-3 shadow-lg shadow-jtq-primary/30">
               JTQ
@@ -54,14 +53,12 @@ export default function AdminLoginPage() {
             <p className="text-sm text-jtq-muted mt-1">Panel de administracion</p>
           </div>
 
-          {/* Error */}
           {error && (
             <div className="mb-4 p-3 rounded-lg bg-red-500/15 border border-red-500/30 text-sm text-red-400">
               {error}
             </div>
           )}
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-jtq-muted mb-1.5">
